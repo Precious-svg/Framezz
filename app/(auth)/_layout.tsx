@@ -1,8 +1,10 @@
-// app/(auth)/_layout.jsx
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 
-const AuthLayout = () => {
-  return <Slot />;
-};
-
-export default AuthLayout;
+export default function AuthLayout() {
+  return (
+    <Stack>
+      <Stack.Screen name="SignUp" />
+      
+    </Stack>
+  );
+}

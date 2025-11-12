@@ -5,7 +5,7 @@ import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
 import { postAuth } from '../../src/context/PostContext';
-export default function HomeScreen() {
+const HomeScreen = () => {
   const [user, setUser] = useState(null);
   const [allPosts, setAllPosts] = useState(null)
   const [loadingPosts, setLoadingPosts] = useState(false);
@@ -120,3 +120,4 @@ export default function HomeScreen() {
   </SafeAreaView>
   );
 }
+export default HomeScreen

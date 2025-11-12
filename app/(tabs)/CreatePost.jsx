@@ -1,6 +1,7 @@
 import { useAuth } from '@/src/context/AuthContext';
 import { postAuth } from '@/src/context/PostContext';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -8,9 +9,10 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreatePost = () => {
-  const {addNewPost} = postAuth()
+  const {addNewPost, fetchAllPosts} = postAuth()
   const {currentUser} = useAuth()
   const router = useRouter()
+  const nav = useNavigation()
   const [selectedImage, setSelectedImage] = useState(""); // { uri: '...' }
   const [caption, setCaption] = useState("");
   if (!currentUser) return <Text>Loading your profile...</Text>;
@@ -71,7 +73,9 @@ const CreatePost = () => {
       
       const newPostId = await addNewPost(postToAdd)
       console.log("firebase called")
-      router.replace('/(tabs)/')
+      await fetchAllPosts()
+
+      router.replace('/')
       setSelectedImage("");
       setCaption("")
     }catch(error){
