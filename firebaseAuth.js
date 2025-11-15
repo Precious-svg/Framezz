@@ -11,12 +11,18 @@ export const signUpWithEmail = async(email, password, name) => {
     try{
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        await setDoc(doc(db, "users", user.uid), {
-            uid: user.uid,
-            email: user.email,
-            createdAt: Date.now(),
-            displayName: name || ""
-        });
+        try {
+            await setDoc(doc(db, "users", user.uid), {
+              uid: user.uid,
+              email: user.email,
+              createdAt: Date.now(),
+              displayName: name || ""
+            });
+       } catch (firestoreError) {
+            console.warn("Firestore user document could not be created:", firestoreError);
+            // Optional: you can still continue, or delete the user if you want strict consistency
+        }
+      
         return user;
 
     } catch(error){

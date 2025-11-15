@@ -23,11 +23,11 @@ const SignUp = () => {
             return;
         }
        try{
-        console.log(`user details:, ${email, password, name}`)
+        console.log("user details:" ,email, password, name)
          const user = await signUp(email, password, name)
          console.log("sign up clicked")
           setError(null)
-          setMessage(`Sign up successful, ${user.uid}`)
+          setMessage(`Sign up successful`)
           setIsSignUp(false)
           setIsLogIn(true)
        }catch(error){

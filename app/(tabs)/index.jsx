@@ -41,12 +41,9 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if( !user) return;
-   
-
-  setLoadingPosts(true);
+   setLoadingPosts(true);
 
   const postsRef = collection(db, "posts");
-
   const unsubscribe = onSnapshot(postsRef, (snapshot) => {
     const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setAllPosts(data);
