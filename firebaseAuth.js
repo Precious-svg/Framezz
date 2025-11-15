@@ -1,7 +1,7 @@
 
 
-import { createUserWithEmailAndPassword, getAuth, getDoc, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
-import { doc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from "./firebaseConfig";
 
 
@@ -83,17 +83,22 @@ export const signInWithGoogle = async () => {
     }
 };
 
-export const fetchUser = async(userId) => {
-    try{
+export const fetchUser = async (userId) => {
+    try {
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
-        if(!userSnap.exists()) throw new Error("task not found");
-        const userData = userSnap.data();
-        return userData
-    }catch(error){;
-        console.error('error fetchung user:', error);
+
+        if (!userSnap.exists()) {
+            throw new Error("user not found");
+        }
+
+        return userSnap.data();
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        return null; // Ensures the function always returns something
     }
-}
+};
+
 // check auth state
 
 export const onAuthStateChangedListener = (callback) => {

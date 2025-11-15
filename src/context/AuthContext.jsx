@@ -92,14 +92,14 @@ const AuthProvider = ({children}) => {
 
     const fetchUserData = async(userId) => {
         try{
-            const user = await fetchUser()
+            const user = await fetchUser(userId)
             return user;
         }catch(error){;
             console.error('error fetchung user:', error);
         }
     }
   return (
-     <AuthContext.Provider value={{ currentUser, logIn, signUp, logOut, forgotPassword, googleSignIn, error, loading, editYourProfile}}>
+     <AuthContext.Provider value={{ currentUser, logIn, signUp, logOut, forgotPassword, googleSignIn, error, loading, editYourProfile, fetchUserData}}>
         {!loading && children}
      </AuthContext.Provider>
   )

@@ -72,10 +72,7 @@ const CreatePost = () => {
       console.log("router called")
       
       const newPostId = await addNewPost(postToAdd)
-      console.log("firebase called")
-      await fetchAllPosts()
-
-      router.replace('/(tabs)')
+      router.replace('/(tabs)/')
       setSelectedImage("");
       setCaption("")
     }catch(error){

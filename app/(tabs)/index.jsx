@@ -1,17 +1,32 @@
 import { onAuthStateChangedListener } from '@/firebaseAuth';
+import { db } from '@/firebaseConfig';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { useAuth } from '../../src/context/AuthContext';
 import { postAuth } from '../../src/context/PostContext';
 const HomeScreen = () => {
   const [user, setUser] = useState(null);
   const [allPosts, setAllPosts] = useState(null)
   const [loadingPosts, setLoadingPosts] = useState(false);
-  const { fetchAllPosts } = postAuth()
+  const { fetchAllPosts, deleteNewPost} = postAuth()
   const { logOut, currentUser} = useAuth()
+  const router = useRouter()
 
+  const handledel = async(id) => {
+      await deleteNewPost(id)
+      router.replace('/(tabs)/')
+      Toast.show({
+        type: 'success',
+        text1: 'Post deleted',
+        text2: 'Your post has been deleted successfully.',
+        position: 'top'
+      });
+  }
 
 
   useEffect(() => {
@@ -26,14 +41,22 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if( !user) return;
-    const getPosts = async() => {
-      setLoadingPosts(true)
-        const data = await fetchAllPosts()
-        setAllPosts(data)
-        setLoadingPosts(false)
-    };
+   
 
-    getPosts()
+  setLoadingPosts(true);
+
+  const postsRef = collection(db, "posts");
+
+  const unsubscribe = onSnapshot(postsRef, (snapshot) => {
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setAllPosts(data);
+    setLoadingPosts(false);
+  });
+
+  // Cleanup listener on unmount
+  return () => {
+    unsubscribe(); // no need for `?` here
+  };
     
   }, [user])
 
@@ -53,14 +76,7 @@ const HomeScreen = () => {
     )
   }
 
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-      console.log('User signed out');
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
+ 
 
   const renderPostItems = ({item}) => {
     return (
@@ -79,8 +95,8 @@ const HomeScreen = () => {
            <MaterialIcons name="add-comment" size={30}  color="#ff2056"/>
          </TouchableOpacity>
          
-         <TouchableOpacity style={{}}>
-           <MaterialIcons name="repeat" size={30}  color="#ff2056"/>
+         <TouchableOpacity style={{}} onPress={() => handledel(item.id)}>
+           <Ionicons  name="trash-outline" size={24}   color="#ff2056"/>
          </TouchableOpacity>
          <Text>
          {(() => {

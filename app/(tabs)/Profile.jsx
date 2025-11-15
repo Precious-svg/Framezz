@@ -2,7 +2,7 @@ import { useAuth } from '@/src/context/AuthContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
@@ -11,18 +11,9 @@ const Profile = () => {
   const router = useRouter()
   const {logOut, fetchUserData, currentUser} = useAuth()
  const [userData, setUserData] = useState()
-  const handleEditUser = async() => { 
-    if(!currentUser) return;
-    try{
 
-    }catch(error){
-      Toast.show({
-        type: 'error',
-        text1: 'Success',
-        text2: 'Eerror editing your profile!.',
-        position: 'top'
-      });
-    }
+  
+  
 
     const handleLogOut = async() => {
       await logOut;
@@ -35,26 +26,26 @@ const Profile = () => {
       });
 
     }
-    const user = await fetchUserData(currentUser.uid)
-    Toast.show({
-      type: 'success',
-      text1: 'Success',
-      text2: 'Profile edited successfully!.',
-      position: 'top'
-    });
-  }
+  
 
-  useEffect( () => {
-    const get = async ()=> {
-      const user = await fetchUserData(currentUser.uid)
-      setUserData(user)
-    }
-   get()
-  }, [])
+  const get = async () => {
+    console.log("current user:", currentUser.displayName)
+    const user = await fetchUserData(currentUser.uid);
+    setUserData(user); // async
+    console.log("user from fire:", user); // shows correct data
+  };
+  
+  useEffect(() => {
+    get();
+  }, []);
+  
+  useEffect(() => {
+    console.log("React state userData updated:", userData);
+  }, [userData]);
   return (
     <SafeAreaView>
       <MaterialIcons name="person-outline" size={60} color="white" />
-      <Text>{user.name}</Text>
+      <Text>{currentUser.email}</Text>
       <View>
         <Button title="Edit Profile"/>
         <Button onPress={handleLogOut} title="Log Out"/>
