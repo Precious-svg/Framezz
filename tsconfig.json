@@ -14,7 +14,6 @@
     "**/*.js",
   "**/*.jsx",
   ".expo/types/**/*.ts",
-    ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/(tabs)/index.jsx", "src/toast/toast.config.js"  ]
+ ]
 }

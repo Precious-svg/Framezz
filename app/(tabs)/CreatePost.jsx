@@ -75,7 +75,7 @@ const CreatePost = () => {
       console.log("firebase called")
       await fetchAllPosts()
 
-      router.replace('/')
+      router.replace('/(tabs)')
       setSelectedImage("");
       setCaption("")
     }catch(error){

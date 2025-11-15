@@ -91,9 +91,13 @@ const AuthProvider = ({children}) => {
     }
 
     const fetchUserData = async(userId) => {
-        const user = await fetchUser(userId)
+        try{
+            const user = await fetchUser()
+            return user;
+        }catch(error){;
+            console.error('error fetchung user:', error);
+        }
     }
-    
   return (
      <AuthContext.Provider value={{ currentUser, logIn, signUp, logOut, forgotPassword, googleSignIn, error, loading, editYourProfile}}>
         {!loading && children}

@@ -1,5 +1,5 @@
 
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { db } from '../../firebaseConfig';
 import { useAuth } from "./AuthContext";
@@ -117,23 +117,24 @@ const PostProvider = ({children}) => {
     // to fetch all posts
 
     const fetchAllPosts = async() => {
+      return posts;
       
-      try{
-        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-       const allPosts = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+      // try{
+      //   const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+      //   const querySnapshot = await getDocs(q);
+      //  const allPosts = querySnapshot.docs.map(doc => ({
+      //     id: doc.id,
+      //     ...doc.data()
+      //   }));
 
-       console.log("All posts:", allPosts);
-         return allPosts;
-      }catch(error){
-        console.error("Error fetching posts:", error);
-      }
+      //  console.log("All posts:", allPosts);
+      //    return allPosts;
+      // }catch(error){
+      //   console.error("Error fetching posts:", error);
+      // }
     }
 
-   const fetchUserId = async(userId) => {
+   const fetchPost = async(Id) => {
       try{
           const postRef = doc(db, "posts", userId);
           const postSnap = await getDoc(userRef);

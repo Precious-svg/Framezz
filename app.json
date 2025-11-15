@@ -10,8 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier" : "com.preciousframez.prettysmile"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.preciousframez.prettysmile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-       "googleServicesFile": "./google-services-json",
+      "googleServicesFile": "./google-services.json",
       "package": "com.preciousframez.prettysmile"
     },
     "web": {
@@ -48,6 +51,18 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6c8eb218-865a-4823-89d5-1002c08fbf0d"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/6c8eb218-865a-4823-89d5-1002c08fbf0d"
     }
   }
 }

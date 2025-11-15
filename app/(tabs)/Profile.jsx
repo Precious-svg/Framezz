@@ -1,18 +1,16 @@
-import { useAuth } from '@/src/context/AuthContext'
-import { useRouter } from 'expo-router'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import Toast from 'react-native-toast-message'
+import { useAuth } from '@/src/context/AuthContext';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 
 const Profile = () => {
   const router = useRouter()
   const {logOut, fetchUserData, currentUser} = useAuth()
-  const handleLogOut = async () =>{
-    await logOut
-    router.replace("/(auth)/SignUp")
-  }
-
+ const [userData, setUserData] = useState()
   const handleEditUser = async() => { 
     if(!currentUser) return;
     try{
@@ -25,6 +23,18 @@ const Profile = () => {
         position: 'top'
       });
     }
+
+    const handleLogOut = async() => {
+      await logOut;
+      router.replace('/(auth)/SignUp')
+      Toast.show({
+        type: 'success',
+        text1: 'You have been logged out',
+        text2: 'Log in to view yiur posts!.',
+        position: 'top'
+      });
+
+    }
     const user = await fetchUserData(currentUser.uid)
     Toast.show({
       type: 'success',
@@ -33,8 +43,22 @@ const Profile = () => {
       position: 'top'
     });
   }
+
+  useEffect( () => {
+    const get = async ()=> {
+      const user = await fetchUserData(currentUser.uid)
+      setUserData(user)
+    }
+   get()
+  }, [])
   return (
     <SafeAreaView>
+      <MaterialIcons name="person-outline" size={60} color="white" />
+      <Text>{user.name}</Text>
+      <View>
+        <Button title="Edit Profile"/>
+        <Button onPress={handleLogOut} title="Log Out"/>
+      </View>
       
     </SafeAreaView>
   )
